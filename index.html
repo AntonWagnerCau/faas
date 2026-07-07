@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Fire as a Service: Augmenting Robot Simulators with Thermally and Visually Accurate Fire Dynamics - Wagner, Rao, Wrede, Pirk, Xiao">
+  <meta name="description" content="Fire as a Service (FaaS) augments existing robot simulators with thermally and visually accurate, real-time fire dynamics for benchmarking and training firefighting robots.">
+  <meta name="keywords" content="fire simulation, robot simulation, co-simulation, thermal dynamics, Isaac Sim, Gazebo, MuJoCo, behavioral cloning, firefighting robots, IROS 2026">
+  <meta name="author" content="Anton R. Wagner, Madhan B. Rao, Helge Wrede, Sören Pirk, Xuesu Xiao">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="VCAI Lab, Kiel University · RobotiXX Lab, George Mason University">
+  <meta property="og:title" content="Fire as a Service: Augmenting Robot Simulators with Thermally and Visually Accurate Fire Dynamics">
+  <meta property="og:description" content="Fire as a Service (FaaS) augments existing robot simulators with thermally and visually accurate, real-time fire dynamics for benchmarking and training firefighting robots.">
+  <meta property="og:url" content="https://antonwagnercau.github.io/faas/">
+  <meta property="og:image" content="https://antonwagnercau.github.io/faas/static/images/social_preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A Spot robot in an Isaac Sim warehouse affected by fire, simulated with FaaS.">
+  <meta property="article:published_time" content="2026-01-01T00:00:00.000Z">
+  <meta property="article:author" content="Anton R. Wagner">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="fire simulation">
+  <meta property="article:tag" content="robot simulation">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fire as a Service: Augmenting Robot Simulators with Thermally and Visually Accurate Fire Dynamics">
+  <meta name="twitter:description" content="Fire as a Service (FaaS) augments existing robot simulators with thermally and visually accurate, real-time fire dynamics for benchmarking and training firefighting robots.">
+  <meta name="twitter:image" content="https://antonwagnercau.github.io/faas/static/images/social_preview.png">
+  <meta name="twitter:image:alt" content="A Spot robot in an Isaac Sim warehouse affected by fire, simulated with FaaS.">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="Fire as a Service: Augmenting Robot Simulators with Thermally and Visually Accurate Fire Dynamics">
+  <meta name="citation_author" content="Wagner, Anton R.">
+  <meta name="citation_author" content="Rao, Madhan B.">
+  <meta name="citation_author" content="Wrede, Helge">
+  <meta name="citation_author" content="Pirk, Sören">
+  <meta name="citation_author" content="Xiao, Xuesu">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)">
+  <meta name="citation_arxiv_id" content="2603.19063">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2603.19063">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#e0331a">
+  <meta name="msapplication-TileColor" content="#e0331a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>Fire as a Service (FaaS) — Thermally and Visually Accurate Fire Dynamics for Robot Simulators | IROS 2026</title>
+
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="256x256" href="static/images/favicon-256.png">
+  <link rel="apple-touch-icon" href="static/images/favicon-256.png">
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Fire as a Service: Augmenting Robot Simulators with Thermally and Visually Accurate Fire Dynamics",
+    "description": "Fire as a Service (FaaS) augments existing robot simulators with thermally and visually accurate, real-time fire dynamics for benchmarking and training firefighting robots.",
+    "author": [
+      { "@type": "Person", "name": "Anton R. Wagner", "affiliation": { "@type": "Organization", "name": "Kiel University" } },
+      { "@type": "Person", "name": "Madhan B. Rao", "affiliation": { "@type": "Organization", "name": "George Mason University" } },
+      { "@type": "Person", "name": "Helge Wrede", "affiliation": { "@type": "Organization", "name": "Kiel University" } },
+      { "@type": "Person", "name": "Sören Pirk", "affiliation": { "@type": "Organization", "name": "Kiel University" } },
+      { "@type": "Person", "name": "Xuesu Xiao", "affiliation": { "@type": "Organization", "name": "George Mason University" } }
+    ],
+    "datePublished": "2026",
+    "publisher": { "@type": "Organization", "name": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)" },
+    "url": "https://antonwagnercau.github.io/faas/",
+    "sameAs": "https://arxiv.org/abs/2603.19063",
+    "image": "https://antonwagnercau.github.io/faas/static/images/social_preview.png",
+    "keywords": ["fire simulation", "robot simulation", "co-simulation", "thermal dynamics", "firefighting robots"],
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="Related work from our group">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>Related Work</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <!-- Cross-link to the companion paper (sibling deployment under the same domain). -->
+        <a href="../fire-aware-navigation/" class="work-item">
+          <div class="work-info">
+            <h5>Understanding Fire Through Thermal Radiation Fields for Mobile Robots</h5>
+            <p>Real-time thermal radiation fields from depth and thermal images for fire-aware robot navigation.</p>
+            <span class="work-venue">IROS 2026</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Fire as a Service: Augmenting Robot Simulators with Thermally and Visually Accurate Fire Dynamics</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Author homepages can be added by wrapping each name in <a href="...">. -->
+              <span class="author-block">Anton R. Wagner<sup>1*</sup>,</span>
+              <span class="author-block">Madhan B. Rao<sup>2*</sup>,</span>
+              <span class="author-block">Helge Wrede<sup>1</sup>,</span>
+              <span class="author-block">Sören Pirk<sup>1</sup>,</span>
+              <span class="author-block">Xuesu Xiao<sup>2</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>VCAI Lab, Kiel University, Germany&nbsp;&nbsp;&nbsp;<sup>2</sup>RobotiXX Lab, George Mason University, USA</span>
+              <br>
+              <span class="author-block">IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2026</span>
+              <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2603.19063" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2603.19063" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://youtu.be/KrJTtT3234w" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-youtube"></i></span>
+                    <span>Video</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="static/images/teaser.jpg" alt="A Spot robot in an Isaac Sim warehouse environment affected by multiple fires, shown from two viewing angles." style="width:100%;border-radius:8px;">
+        <h2 class="subtitle has-text-centered">
+          <b>Fire as a Service (FaaS)</b> augments existing robot simulators with thermally and visually accurate
+          fire dynamics. Here we show a Spot robot in an Isaac Sim warehouse environment affected by multiple fires
+          from two different viewing angles.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Most existing robot simulators prioritize rigid-body dynamics and photorealistic rendering, but largely
+              neglect the thermally and optically complex phenomena that characterize real-world fire environments. For
+              robots envisioned as future firefighters, this limitation hinders both reliable capability evaluation and
+              the generation of representative training data prior to deployment in hazardous scenarios. To address these
+              challenges, we introduce <b>Fire as a Service (FaaS)</b>, a novel, asynchronous co-simulation framework that
+              augments existing robot simulators with high-fidelity and computationally efficient fire simulations. Our
+              pipeline enables robots to experience accurate, multi-species thermodynamic heat transfer and visually
+              consistent volumetric smoke without disrupting high-frequency rigid-body control loops. We demonstrate that
+              our framework can be integrated with diverse robot simulators to generate physically accurate fire behavior,
+              benchmark thermal hazards encountered by robotic platforms, and collect realistic multimodal perceptual data.
+              Crucially, its real-time performance supports human-in-the-loop teleoperation, enabling the successful training
+              of reactive, multimodal policies via Behavioral Cloning. By adding fire dynamics to robot simulations, FaaS
+              provides a scalable pathway toward safer, more reliable deployment of robots in fire scenarios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video -->
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered">Video</h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <div class="publication-video">
+              <iframe src="https://www.youtube.com/embed/KrJTtT3234w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Asynchronous Fire Co-Simulation</h2>
+          <div class="content has-text-justified">
+            <p>
+              FaaS treats fire as an external service that evolves independently in a high-fidelity combustion solver,
+              rather than baking it into the robot's control loop. We build on <b>Fire-X</b>, a GPU-accelerated hybrid
+              solver with multi-species thermochemistry, validated against real compartment-fire experiments and NIST's
+              Fire Dynamics Simulator. The robot simulator streams camera pose, depth, and scene geometry over ROS; the
+              fire simulator rolls out thermodynamic dynamics, renders a viewpoint-consistent alpha-matted image of flame
+              and smoke, and composites it back onto the robot's RGB observations. Because the two run
+              <b>asynchronously and non-blocking</b> — each always using the latest available data — the robot's control
+              loop is never paused, keeping end-to-end latency low enough for real-time augmentation and teleoperation.
+            </p>
+          </div>
+          <img src="static/images/overview.png" alt="FaaS architecture: a robot simulator and an external fire simulator exchange pose, depth, RGB, and composite renderings over ROS in a non-blocking loop." style="width:100%;border-radius:8px;background:#fff;">
+          <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
+            The system asynchronously couples a conventional robot simulator (red) with an external fire simulator (orange)
+            via a non-blocking ROS data bridge. Camera pose, depth, and RGB are published best-effort; the fire simulator
+            renders a viewpoint-consistent, alpha-matted flame/smoke image that is composited back onto the robot's sensors.
+          </h2>
+
+          <img src="static/images/simulators.jpg" alt="FaaS fire renderings superimposed on Gazebo (left) and MuJoCo (right) simulations." style="width:100%;border-radius:8px;margin-top:2rem;">
+          <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
+            Engine-agnostic by design: besides Isaac Sim, FaaS superimposes scene-aware fire on established simulators
+            such as Gazebo (left) and MuJoCo (right).
+          </h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Capabilities -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Key Capabilities</h2>
+          <div class="content has-text-left">
+            <ol>
+              <li><b>Thermally accurate hazard modeling</b> that quantifies heat radiation and cumulative thermal risk to robotic hardware.</li>
+              <li><b>Visually consistent fire and smoke dynamics</b> that augment camera-based perception in a physically grounded manner.</li>
+              <li><b>A high-performance co-simulation architecture</b> with temporal resolution sufficient for both human-in-the-loop teleoperation and high-frequency reactive safety controllers, enabling reactive, thermally-informed policies trained via Behavioral Cloning.</li>
+              <li><b>Engine-agnostic interoperability</b>, with seamless integration demonstrated across Isaac Sim, Gazebo, and MuJoCo.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results carousel -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered">Results</h2>
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="static/images/composition.jpg" alt="Scene-aware compositing: combining a fire rendering with an RGB frame and depth map to produce an occlusion-aware fire behind a wall." loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+              Scene-aware compositing: a fire rendering (c) is combined with an RGB frame (a) and its depth map (b) to
+              produce a geometrically consistent fire burning behind a wall (d).
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/three_fires.png" alt="Multi-fire scenario in Isaac Sim with three combustion sources of increasing intensity." loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+              Multi-fire scenario in Isaac Sim: three combustion sources of increasing intensity produce distinct plume
+              heights and asymmetric smoke volumes (overview and onboard camera view).
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/costmap_paths.png" alt="Time-averaged thermal radiation costmap with three A*-planned paths across fire sources." loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+              Time-averaged thermal-radiation costmap of the three-fire scenario with three A*-planned paths. Fire sources
+              F<sub>1</sub>–F<sub>3</sub> (increasing size) drive the incident-radiation heatmap that shapes each path.
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/reactive_control.jpg" alt="Temporal sequence of a high-frequency thermally reactive control experiment." loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+              High-frequency thermally reactive control: as incident radiation rises the robot is steered away from the
+              fire (c, d), then resumes toward the goal in green (e) and reaches it safely (f).
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/policy.png" alt="Behavioral cloning policy paths compared to human demonstrations." loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+              Behavioral Cloning: a reactive policy learned from human teleoperation (red) reproduces demonstrated
+              trajectories (blue) that steer around the fire.
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BibTeX -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@inproceedings{wagner2026faas,
+  title     = {Fire as a Service: Augmenting Robot Simulators with Thermally and Visually Accurate Fire Dynamics},
+  author    = {Wagner, Anton R. and Rao, Madhan B. and Wrede, Helge and Pirk, S{\"o}ren and Xiao, Xuesu},
+  booktitle = {2026 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year      = {2026},
+  organization = {IEEE}
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  </main>
+</body>
+</html>
